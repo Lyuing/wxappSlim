@@ -9,6 +9,8 @@ const output = './dist'     // 输出目录
 
 命令行执行 
 
+`npm install` 安装依赖
+
 `npm run clean` 清空输出目录
 
 `npm run dev` 清空输出目录，并压缩代码输出
