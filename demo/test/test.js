@@ -1,3 +1,5 @@
 function greet(name){
-  return `it's a nice day ${name}`
+  var s = `it's a nice day ${name}`
+  // console.log('commonts')
+  return s
 }

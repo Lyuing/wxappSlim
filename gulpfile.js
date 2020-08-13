@@ -7,9 +7,9 @@ const del = require('del');
 const cleanCss = require('gulp-clean-css');
 const htmlmin = require('gulp-htmlmin');
 
-const entry = '../egg_wx'
-// const entry = './demo'
-const output = './dist'
+// const entry = '../wx'    // 小程序地址
+const entry = './demo'      // 示例地址
+const output = './dist'     // 输出目录
 
 
 const isJS = (file) => file.extname === '.js';
@@ -36,14 +36,13 @@ async function fileHandle() {
   // 分别处理 js、wxss、wxml
   .pipe(gulpif( isJS, jsChannel()))
   .pipe(gulpif( isCSS, cleanCss()))
-  .pipe(gulpif( isWXML, htmlmin({
-    caseSensitive: true,    //  大小写敏感
-    removeComments: true,   // 	删除HTML注释
-    keepClosingSlash: true, // 单标签上保留斜线
-    html5: false,           // 
-  })))
+  // 取消对 wxml 的处理，<input></input>等与 html 中存在冲突
+  // .pipe(gulpif( isWXML, htmlmin({
+  //   caseSensitive: true,    //  大小写敏感
+  //   removeComments: true,   // 	删除HTML注释
+  //   keepClosingSlash: true, // 单标签上保留斜线
+  // })))
   .pipe(dest(output))
-  console.log('%c finish', 'color: #22aa66')
 }
 
 exports.clean = clean
