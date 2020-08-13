@@ -8,7 +8,10 @@ const output = './dist'     // 输出目录
 ```
 
 命令行执行 
+
 `npm run clean` 清空输出目录
+
 `npm run dev` 清空输出目录，并压缩代码输出
+
 
 js 压缩使用 gulp-uglify, wxss压缩使用 gulp-clean-css, wxml 使用 gulp-htmlmin 过程存在bug, 暂时关闭
