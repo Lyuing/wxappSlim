@@ -18,7 +18,17 @@ const isWXML = (file) => file.extname === '.wxml';
 
 const jsChannel = lazypipe()
   .pipe( babel, { presets: ['@babel/env'] } )
-  .pipe( uglify )
+  .pipe( uglify, {
+    // 压缩配置
+    compress: {
+      drop_console: true,
+    },
+    // 输出配置
+    output: {
+      comments: false,    // 移除注释
+    },
+    toplevel: false,    // 混淆最高作用域中的变量和函数名
+  })
 
 // 清理
 async function clean(){
