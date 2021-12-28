@@ -9,11 +9,14 @@ const htmlmin = require('gulp-htmlmin');
 
 const webpack = require('webpack-stream');
 const named = require('vinyl-named');
+const rename = require("gulp-rename");
 
-const entry = '../egg_wx'    // 小程序地址
+const entry = '../ass'    // ass地址
+// const entry = '../egg_wx'    // 小程序地址
 // const entry = './demo'      // 示例地址
 const output = './dist'     // 输出目录
 
+const isASS = (file) => file.extname === '.ass';
 const isJS = (file) => file.extname === '.js';
 const isCSS = (file) => file.extname === '.wxss' || file.extname === '.css';
 const isWXML = (file) => file.extname === '.wxml' || file.extname === '.html';
@@ -55,6 +58,16 @@ const esChannel = lazypipe()
     }
   })
   .pipe( uglify, uglifyOption)
+
+  // 文件重命名 转换方法
+const assChannel = lazypipe()
+  // 注意传参写法！！
+  .pipe(rename, path=> {
+    let base = path.basename
+    let idx = base.match(/\d{3}/g)[0]
+    console.log(base, idx)
+    path.basename = `第${idx}话`;
+  })
 
 // 清理
 async function clean(){
@@ -99,6 +112,17 @@ async function chunkBuild() {
   .pipe(dest(output))
 }
 
+async function renameBuild(){
+  src([ 
+    `${entry}/*.ass`,
+  ], {
+    allowEmpty: true
+  })
+  .pipe(gulpif( isASS, assChannel()))
+  .pipe(dest(output))
+}
+
 exports.clean = clean
+exports.rename = series( clean, renameBuild)    // 文件重命名
 exports.build = series( clean, chunkBuild)      // html 压缩
-exports.default = series( clean, fileBuild)    // 小程序压缩
+exports.default = series( clean, fileBuild)     // 小程序压缩
